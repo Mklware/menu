@@ -6,106 +6,105 @@
 <title>Сніданок для тебе ☀️</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root {
-    --cream: #FAF6EF; --warm: #F2E8D9; --blush: #E8C4B0;
-    --rose: #C9837A; --deep: #6B3D3A; --text: #3A2828; --muted: #9A7A72;
-  }
-  body { background: var(--cream); font-family: 'Jost', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
-  body::before {
-    content: ''; position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 0;
-  }
-  .page { max-width: 480px; margin: 0 auto; padding: 0 0 60px; position: relative; z-index: 1; }
-
-  .header { text-align: center; padding: 48px 24px 24px; }
-  .header::after { content: ''; display: block; width: 50px; height: 1px; background: var(--blush); margin: 20px auto 0; }
-  .morning-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; animation: fadeUp 0.7s ease both; }
-  .title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; line-height: 1.15; color: var(--deep); animation: fadeUp 0.7s 0.1s ease both; }
-  .title em { font-style: italic; color: var(--rose); }
-  .subtitle { margin-top: 10px; font-size: 13px; font-weight: 300; color: var(--muted); animation: fadeUp 0.7s 0.2s ease both; }
-
-  .section { padding: 0 14px; margin-top: 14px; }
-  .section-label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; padding-left: 2px; }
-
-  /* MOBILE: horizontal cards */
-  .cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
-  .card {
-    background: white; border-radius: 18px; overflow: hidden;
-    cursor: pointer; border: 2px solid transparent;
-    transition: all 0.25s ease;
-    box-shadow: 0 2px 12px rgba(107,61,58,0.07);
-    animation: fadeUp 0.6s ease both;
-    position: relative;
-    display: flex; flex-direction: row; align-items: stretch;
-    min-height: 110px;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .card:active { transform: scale(0.985); }
-  .card.selected { border-color: var(--rose); box-shadow: 0 4px 20px rgba(201,131,122,0.22); background: #FFFAF8; }
-
-  .card-img-wrap { width: 130px; min-width: 130px; overflow: hidden; background: var(--warm); flex-shrink: 0; }
-  .card-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: transform 0.4s ease; }
-
-  .card-body { padding: 14px 38px 14px 16px; display: flex; flex-direction: column; justify-content: center; flex: 1; }
-  .card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: var(--deep); line-height: 1.2; }
-  .card-desc { font-size: 12px; font-weight: 300; color: var(--muted); margin-top: 5px; line-height: 1.4; }
-
-  .check-badge {
-    position: absolute; top: 10px; right: 10px;
-    width: 26px; height: 26px; border-radius: 50%;
-    background: white; border: 1.5px solid var(--blush);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 12px; color: transparent; transition: all 0.25s;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08); z-index: 2;
-  }
-  .card.selected .check-badge { background: var(--rose); border-color: var(--rose); color: white; }
-
-  /* DESKTOP: 2-col grid, vertical */
-  @media (min-width: 500px) {
-    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-    .card { flex-direction: column; min-height: unset; }
-    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(107,61,58,0.13); }
-    .card-img-wrap { width: 100%; min-width: unset; height: 145px; }
-    .card-body { padding: 13px 13px 15px; }
-    .card-name { font-size: 17px; }
-    .card-desc { font-size: 11px; }
-  }
-
-  .cta-wrap { padding: 0 14px; margin-top: 24px; animation: fadeUp 0.7s 0.4s ease both; }
-  .cta {
-    width: 100%; padding: 18px; background: var(--deep); color: var(--cream);
-    border: none; border-radius: 16px; font-family: 'Jost', sans-serif;
-    font-size: 13px; font-weight: 300; letter-spacing: 2.5px;
-    text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
-    position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent;
-  }
-  .cta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--rose), var(--deep)); opacity: 0; transition: opacity 0.3s; }
-  .cta:hover::before { opacity: 1; }
-  .cta span { position: relative; z-index: 1; }
-  .cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(107,61,58,0.25); }
-  .cta:active { transform: scale(0.98); }
-  .cta:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
-  .cta:disabled::before { opacity: 0; }
-
-  .note { text-align: center; padding: 24px 24px 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: var(--muted); line-height: 1.7; animation: fadeUp 0.7s 0.5s ease both; }
-
-  .result { display: none; position: fixed; inset: 0; background: rgba(58,40,40,0.6); backdrop-filter: blur(10px); z-index: 100; align-items: center; justify-content: center; padding: 24px; }
-  .result.show { display: flex; }
-  .result-card { background: var(--cream); border-radius: 24px; padding: 40px 28px; max-width: 340px; width: 100%; text-align: center; animation: scaleIn 0.35s ease; position: relative; }
-  .result-icon { font-size: 44px; margin-bottom: 14px; }
-  .result-title { font-family: 'Cormorant Garamond', serif; font-size: 27px; font-weight: 300; color: var(--deep); margin-bottom: 6px; }
-  .result-items { font-size: 13px; color: var(--muted); line-height: 1.9; margin: 14px 0 22px; font-weight: 300; white-space: pre-line; }
-  .result-note { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--rose); }
-  .close-btn { position: absolute; top: 14px; right: 18px; background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; }
-
-  @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-  @keyframes scaleIn { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
-  .card:nth-child(1) { animation-delay: 0.12s; }
-  .card:nth-child(2) { animation-delay: 0.20s; }
-  .card:nth-child(3) { animation-delay: 0.28s; }
-  .card:nth-child(4) { animation-delay: 0.36s; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --cream: #FAF6EF; --warm: #F2E8D9; --blush: #E8C4B0;
+  --rose: #C9837A; --deep: #6B3D3A; --text: #3A2828; --muted: #9A7A72;
+}
+body { background: var(--cream); font-family: 'Jost', sans-serif; color: var(--text); min-height: 100vh; overflow-x: hidden; }
+body::before {
+  content: ''; position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none; z-index: 0;
+}
+.page { max-width: 480px; margin: 0 auto; padding: 0 0 60px; position: relative; z-index: 1; }
+.header { text-align: center; padding: 48px 24px 24px; }
+.header::after { content: ''; display: block; width: 50px; height: 1px; background: var(--blush); margin: 20px auto 0; }
+.morning-label { font-size: 10px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; animation: fadeUp 0.7s ease both; }
+.title { font-family: 'Cormorant Garamond', serif; font-size: 38px; font-weight: 300; line-height: 1.15; color: var(--deep); animation: fadeUp 0.7s 0.1s ease both; }
+.title em { font-style: italic; color: var(--rose); }
+.subtitle { margin-top: 10px; font-size: 13px; font-weight: 300; color: var(--muted); animation: fadeUp 0.7s 0.2s ease both; }
+.section { padding: 0 14px; margin-top: 14px; }
+.section-label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; padding-left: 2px; }
+.cards { display: flex; flex-direction: column; gap: 12px; margin-bottom: 24px; }
+.card {
+  background: white; border-radius: 18px; overflow: hidden;
+  cursor: pointer; border: 2px solid transparent;
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 12px rgba(107,61,58,0.07);
+  animation: fadeUp 0.6s ease both;
+  position: relative;
+  display: flex; flex-direction: row; align-items: stretch;
+  min-height: 110px;
+  -webkit-tap-highlight-color: transparent;
+}
+.card:active { transform: scale(0.985); }
+.card.selected { border-color: var(--rose); box-shadow: 0 4px 20px rgba(201,131,122,0.22); background: #FFFAF8; }
+.card-img-wrap { width: 130px; min-width: 130px; overflow: hidden; background: var(--warm); flex-shrink: 0; }
+.card-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; transition: transform 0.4s ease; }
+.card-body { padding: 14px 38px 14px 16px; display: flex; flex-direction: column; justify-content: center; flex: 1; }
+.card-name { font-family: 'Cormorant Garamond', serif; font-size: 19px; color: var(--deep); line-height: 1.2; }
+.card-desc { font-size: 12px; font-weight: 300; color: var(--muted); margin-top: 5px; line-height: 1.4; }
+.check-badge {
+  position: absolute; top: 10px; right: 10px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: white; border: 1.5px solid var(--blush);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; color: transparent; transition: all 0.25s;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08); z-index: 2;
+}
+.card.selected .check-badge { background: var(--rose); border-color: var(--rose); color: white; }
+@media (min-width: 500px) {
+  .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .card { flex-direction: column; min-height: unset; }
+  .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(107,61,58,0.13); }
+  .card-img-wrap { width: 100%; min-width: unset; height: 145px; }
+  .card-body { padding: 13px 13px 15px; }
+  .card-name { font-size: 17px; }
+  .card-desc { font-size: 11px; }
+}
+.wishes-section { padding: 0 14px; margin-top: 8px; animation: fadeUp 0.7s 0.35s ease both; }
+.wishes-box { background: white; border-radius: 18px; padding: 20px 18px; box-shadow: 0 2px 12px rgba(107,61,58,0.07); }
+.wishes-label { font-size: 9px; letter-spacing: 4px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+.wishes-textarea {
+  width: 100%; min-height: 90px; border: 1.5px solid var(--blush);
+  border-radius: 12px; padding: 12px 14px; font-family: 'Jost', sans-serif;
+  font-size: 13px; font-weight: 300; color: var(--text);
+  background: var(--cream); resize: none; outline: none;
+  transition: border-color 0.2s; line-height: 1.6;
+}
+.wishes-textarea::placeholder { color: var(--muted); }
+.wishes-textarea:focus { border-color: var(--rose); }
+.cta-wrap { padding: 0 14px; margin-top: 20px; animation: fadeUp 0.7s 0.4s ease both; }
+.cta {
+  width: 100%; padding: 18px; background: var(--deep); color: var(--cream);
+  border: none; border-radius: 16px; font-family: 'Jost', sans-serif;
+  font-size: 13px; font-weight: 300; letter-spacing: 2.5px;
+  text-transform: uppercase; cursor: pointer; transition: all 0.3s ease;
+  position: relative; overflow: hidden; -webkit-tap-highlight-color: transparent;
+}
+.cta::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, var(--rose), var(--deep)); opacity: 0; transition: opacity 0.3s; }
+.cta:hover::before { opacity: 1; }
+.cta span { position: relative; z-index: 1; }
+.cta:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(107,61,58,0.25); }
+.cta:active { transform: scale(0.98); }
+.cta:disabled { opacity: 0.4; cursor: default; transform: none; box-shadow: none; }
+.cta:disabled::before { opacity: 0; }
+.note { text-align: center; padding: 24px 24px 0; font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 15px; color: var(--muted); line-height: 1.7; animation: fadeUp 0.7s 0.5s ease both; }
+.result { display: none; position: fixed; inset: 0; background: rgba(58,40,40,0.6); backdrop-filter: blur(10px); z-index: 100; align-items: center; justify-content: center; padding: 24px; }
+.result.show { display: flex; }
+.result-card { background: var(--cream); border-radius: 24px; padding: 40px 28px; max-width: 340px; width: 100%; text-align: center; animation: scaleIn 0.35s ease; position: relative; }
+.result-icon { font-size: 44px; margin-bottom: 14px; }
+.result-title { font-family: 'Cormorant Garamond', serif; font-size: 27px; font-weight: 300; color: var(--deep); margin-bottom: 6px; }
+.result-items { font-size: 13px; color: var(--muted); line-height: 1.9; margin: 14px 0 22px; font-weight: 300; white-space: pre-line; }
+.result-note { font-family: 'Cormorant Garamond', serif; font-size: 17px; font-style: italic; color: var(--rose); }
+.close-btn { position: absolute; top: 14px; right: 18px; background: none; border: none; font-size: 22px; color: var(--muted); cursor: pointer; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes scaleIn { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
+.card:nth-child(1) { animation-delay: 0.12s; }
+.card:nth-child(2) { animation-delay: 0.20s; }
+.card:nth-child(3) { animation-delay: 0.28s; }
+.card:nth-child(4) { animation-delay: 0.36s; }
 </style>
 </head>
 <body>
@@ -115,112 +114,98 @@
     <h1 class="title">Що приготувати<br><em>для тебе?</em></h1>
     <p class="subtitle">Обери свій ідеальний сніданок ☀️</p>
   </div>
-
   <div class="section">
     <div class="section-label">Основне</div>
-    <div class="cards">
-
-      <div class="card" onclick="selectCard(this,'Панкейки з бананом 🥞')">
-        <div class="check-badge">✓</div>
+    <div class="cards" id="cards">
+      <div class="card" onclick="toggleCard(this)">
         <div class="card-img-wrap">
-          <img class="card-img" alt="Панкейки з бананом"
-            src="https://images.unsplash.com/photo-1555813456-94a3dd418cd3?w=400&q=80&fit=crop&crop=center">
+          <img class="card-img" src="https://images.unsplash.com/photo-1528207776546-365bb710ee93?w=400&q=80" alt="Панкейки">
         </div>
         <div class="card-body">
           <div class="card-name">Панкейки з бананом</div>
           <div class="card-desc">пухкі, мед, свіжий банан</div>
         </div>
-      </div>
-
-      <div class="card" onclick="selectCard(this,'Гранола з йогуртом 🥣')">
         <div class="check-badge">✓</div>
+      </div>
+      <div class="card" onclick="toggleCard(this)">
         <div class="card-img-wrap">
-          <img class="card-img" alt="Гранола з йогуртом"
-            src="https://images.unsplash.com/photo-1725883691833-97103ecd582a?w=400&q=80&fit=crop&crop=center">
+          <img class="card-img" src="https://images.unsplash.com/photo-1490474418585-ba9bad8fd0ea?w=400&q=80" alt="Гранола">
         </div>
         <div class="card-body">
           <div class="card-name">Гранола з йогуртом</div>
           <div class="card-desc">keto гранола + Активіа + ягоди</div>
         </div>
-      </div>
-
-      <div class="card" onclick="selectCard(this,'Тости з лососем та крем-сиром 🍞')">
         <div class="check-badge">✓</div>
+      </div>
+      <div class="card" onclick="toggleCard(this)">
         <div class="card-img-wrap">
-          <img class="card-img" alt="Тости з лососем та крем-сиром"
-            src="https://plus.unsplash.com/premium_photo-1694961988603-57040e929951?w=400&q=80&fit=crop&crop=center">
+          <img class="card-img" src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=80" alt="Тости">
         </div>
         <div class="card-body">
           <div class="card-name">Тости з лососем</div>
           <div class="card-desc">хрустке, крем-сир, лосось</div>
         </div>
-      </div>
-
-      <div class="card" onclick="selectCard(this,'Бельгійські вафлі з лососем 🧇')">
         <div class="check-badge">✓</div>
+      </div>
+      <div class="card" onclick="toggleCard(this)">
         <div class="card-img-wrap">
-          <img class="card-img" alt="Бельгійські вафлі з лососем"
-            src="https://wanderingchickpea.com/wp-content/uploads/2022/01/dscf3237.jpg">
+          <img class="card-img" src="https://images.unsplash.com/photo-1562376552-0d160a2f238d?w=400&q=80" alt="Вафлі">
         </div>
         <div class="card-body">
           <div class="card-name">Бельгійські вафлі</div>
           <div class="card-desc">з лососем і крем-сиром</div>
         </div>
+        <div class="check-badge">✓</div>
       </div>
-
     </div>
   </div>
-
+  <div class="wishes-section">
+    <div class="wishes-box">
+      <div class="wishes-label">Побажання та пропозиції</div>
+      <textarea class="wishes-textarea" id="wishes" placeholder="Напиши свої побажання, алергії або що хочеш спробувати ✨"></textarea>
+    </div>
+  </div>
   <div class="cta-wrap">
-    <button class="cta" id="cta-btn" onclick="sendOrder()" disabled>
+    <button class="cta" id="cta" onclick="sendOrder()" disabled>
       <span>Надіслати замовлення 💌</span>
     </button>
   </div>
   <p class="note">Просто обери, і я принесу 🌸</p>
 </div>
-
 <div class="result" id="result">
   <div class="result-card">
     <button class="close-btn" onclick="closeResult()">×</button>
-    <div class="result-icon">🍳</div>
-    <div class="result-title">Прийнято!</div>
+    <div class="result-icon">🌸</div>
+    <div class="result-title">Замовлення прийнято!</div>
     <div class="result-items" id="result-items"></div>
-    <div class="result-note">Очікуй хвилин 15 ☕<br><span style="font-size:13px; font-style:normal; font-family:'Jost',sans-serif; color:var(--muted); font-weight:300;">поки готується — попий кавку<br>і посиди в телефоні 🙂</span></div>
+    <div class="result-note">Вже несу ☕</div>
   </div>
 </div>
-
 <script>
-  const BOT_TOKEN = '8691637746:AAG-cc1N9ni41FD_Se22SxlgGLTE1KkJpyM';
-  const CHAT_ID   = '507491853';
-
-  let selected = null;
-
-  function selectCard(el, name) {
-    document.querySelectorAll('.card').forEach(c => c.classList.remove('selected'));
-    el.classList.add('selected');
-    selected = name;
-    document.getElementById('cta-btn').disabled = false;
-  }
-
-  async function sendOrder() {
-    document.getElementById('result-items').innerText = `✦ ${selected}`;
-    document.getElementById('result').classList.add('show');
-
-    const text = `🌸 Нове замовлення сніданку!\n\n✦ ${selected}\n\nГотуй! 👨‍🍳`;
-    try {
-      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ chat_id: CHAT_ID, text, parse_mode: 'HTML' })
-      });
-    } catch(e) {
-      console.error('TG error:', e);
-    }
-  }
-
-  function closeResult() {
-    document.getElementById('result').classList.remove('show');
-  }
+function toggleCard(card) {
+  card.classList.toggle('selected');
+  updateButton();
+}
+function updateButton() {
+  const selected = document.querySelectorAll('.card.selected');
+  document.getElementById('cta').disabled = selected.length === 0;
+}
+function sendOrder() {
+  const selected = document.querySelectorAll('.card.selected');
+  if (!selected.length) return;
+  const items = Array.from(selected).map(c => '• ' + c.querySelector('.card-name').textContent).join('\n');
+  const wishes = document.getElementById('wishes').value.trim();
+  let text = items;
+  if (wishes) text += '\n\n💬 ' + wishes;
+  document.getElementById('result-items').textContent = text;
+  document.getElementById('result').classList.add('show');
+}
+function closeResult() {
+  document.getElementById('result').classList.remove('show');
+  document.querySelectorAll('.card.selected').forEach(c => c.classList.remove('selected'));
+  document.getElementById('wishes').value = '';
+  updateButton();
+}
 </script>
 </body>
 </html>
