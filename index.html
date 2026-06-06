@@ -182,6 +182,9 @@ body::before {
   </div>
 </div>
 <script>
+const TG_TOKEN = '8691637746:AAG-cc1N9ni41FD_Se22SxlgGLTE1KkJpyM';
+const TG_CHAT = '507491853';
+
 function toggleCard(card) {
   card.classList.toggle('selected');
   updateButton();
@@ -195,10 +198,21 @@ function sendOrder() {
   if (!selected.length) return;
   const items = Array.from(selected).map(c => '• ' + c.querySelector('.card-name').textContent).join('\n');
   const wishes = document.getElementById('wishes').value.trim();
-  let text = items;
-  if (wishes) text += '\n\n💬 ' + wishes;
-  document.getElementById('result-items').textContent = text;
-  document.getElementById('result').classList.add('show');
+  let text = '🍳 Нове замовлення:\n\n' + items;
+  if (wishes) text += '\n\n💬 Побажання: ' + wishes;
+
+  fetch('https://api.telegram.org/bot' + TG_TOKEN + '/sendMessage', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ chat_id: TG_CHAT, text: text })
+  }).then(r => r.json()).then(d => {
+    if (d.ok) {
+      document.getElementById('result-items').textContent = Array.from(selected).map(c => '• ' + c.querySelector('.card-name').textContent).join('\n') + (wishes ? '\n\n💬 ' + wishes : '');
+      document.getElementById('result').classList.add('show');
+    } else {
+      alert('Помилка відправки: ' + d.description);
+    }
+  }).catch(() => alert('Помилка з\'єднання'));
 }
 function closeResult() {
   document.getElementById('result').classList.remove('show');
